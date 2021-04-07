@@ -1,3 +1,4 @@
+// Absolute Trash solution. Bottom 5% of Memeory and Speed I did not give this one any thought :/ I am ashamed I could write such a bad solution
 #include <iostream>
 #include <string>
 #include <map>
@@ -15,24 +16,28 @@ int myAtoi(string s)
     int charactersToErase = 0;
     int digitCount = 0;
     string processedString = s;
-    for (auto character: processedString)
+    int characterIndex = 0;
+    while (characterIndex < processedString.length())
     {
+        char character = processedString[characterIndex];
         if (!leadingCharactersProcessed)
         {
-            if (character == ' ') charactersToErase++;
+            if (character == ' ' && !signDetermined) charactersToErase++;
             else if (character == '-' && !signDetermined){ 
                 isNegative = true;
                 signDetermined = true;
                 charactersToErase++;
             }
             else if ((character == '+' || character != '+') && signDetermined == false){ 
-                charactersToErase++;
+                if (character == '+'){
+                    charactersToErase++;
+                }
+                else characterIndex--;
                 signDetermined = true;
             }
             else if (character == '0' && leadingCharactersProcessed == false && signDetermined) charactersToErase++;
             else if(charToNumber.count(character) == 0) return 0;
-            
-            if (charToNumber[character] != 0 || character == '0'){
+            else{
                 leadingCharactersProcessed = true;
             }
         } 
@@ -40,6 +45,7 @@ int myAtoi(string s)
             if (charToNumber[character] == 0 && character != '0') break;
             else digitCount++;           
         }
+        characterIndex++;
     }
     processedString.erase(0, charactersToErase);
     for (int i = 0; i < digitCount; i++)
@@ -56,5 +62,5 @@ int myAtoi(string s)
 int main()
 {
     map<char, int> charToNumber = {{'0', 0}, {'1', 1}, {'2', 2}, {'3', 3}, {'4', 4}, {'5', 5}, {'6', 6},  {'7', 7}, {'8', 8},  {'9', 9}};
-    cout << myAtoi("42") << endl;
+    cout << myAtoi("   +0 123") << endl;
 }
