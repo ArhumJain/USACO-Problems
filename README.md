@@ -1,2 +1,2 @@
-# Algorithms
+# USACO 
 Training

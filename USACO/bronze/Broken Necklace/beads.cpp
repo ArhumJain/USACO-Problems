@@ -1,42 +1,56 @@
+/*
+ID: arhumja1
+LANG: C++
+PROG: beads
+*/
+
 #include <iostream>
 #include <fstream>
-#include <map>
 
 using namespace std;
 
-void test() {
-    int arr[100] = {0};
-
-    arr[97] = 5;
-    cout << int('r')-97 << endl;
-    cout << arr['a'] << endl;
-    
-}
 int main() {
-    test();
-    ifstream fin("beads.in");
+    ifstream fin("D:\\Programming\\Algorithms\\USACO\\bronze\\Broken Necklace\\beads.in");
     ofstream fout("beads.out");
-
+    
     int n;
+    char prev;
+    int total = 1;
+    int currCount = 0;
+    int largest = 0;
+    bool other = false;
+    
     string bead;
-    map<char, int> count = {{'r', 0}, {'b', 0}};
-
+    
     fin >> n >> bead;
     bead += bead;
+     
+    if (bead[0] == 'w') { prev = bead[1]; currCount += 1; }
+    else { prev = bead[0]; currCount += 1; }
 
-    // int red = 0;
-    // int blue = 0;
-    int curr;
-    int count = 0;
-    char prev;
-    if (bead[0] == 'w'){
-        prev = bead[1] == 'r' ? 'r' : 'b';
-
-        count[bead[1]] += 1;
+    for (int i = 1; i < n*2; i++) {
+        if (bead[i] == 'w') total += 1; 
+        else if (bead[i] == prev || (prev == 'w' && !other)) {
+            prev = bead[i];
+            currCount += 1;
+            total += 1;
+        }
+        else if (bead[i] != prev && !other) {
+            prev = bead[i];
+            currCount = 1;
+            total += 1;
+            other = true;
+        }
+        else if (bead[i] != prev) {
+            if (total > largest) largest = total;
+            i -= currCount;
+            prev = bead[i];
+            currCount = 1;
+            total = 1;
+            other = false;
+        }
     }
-    for (int i = 1; i < (n*2); i++) {
-        cout << i << endl;
-    }
-    cout << n << endl;
-    cout << bead << endl;
+    
+    cout << largest << "\n";
+    // fout << largest << "\n";
 }
