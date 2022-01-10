@@ -1,2 +1,2 @@
 # USACO 
-Training
+grindset
